@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 
 const questionSchema = mongoose.Schema({
-    "title": {type: String, required: true},
-    "description": {type: String, required: true}
+    "question_text": {type: String, required: true},
+    "date": {type: String, required: true},
+    "id": {type: String, required: true},
+    "user_id": {type: String, required: true}
 })
 
 
