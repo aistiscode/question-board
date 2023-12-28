@@ -14,7 +14,7 @@ const REGISTER = async (req, res)=>{
             "password": myHash,
         });
 
-        user.id = user._id;
+        user.user_id = user._id;
 
         console.table(user);
         const response = await user.save();
@@ -33,25 +33,30 @@ const LOGIN = async (req, res)=>{
         const user = await userModel.findOne({ email: req.body.email });
     
         if (!user) {
-          return res.status(404).json({ msg: "User does not exist" });
+          return res.status(401).json({ msg: "Email or password is incorrect" });
         }
-    
+        
+        else{
         const isPasswordMatch = bcrypt.compareSync(
           req.body.password,
           user.password
         );
     
         if (!isPasswordMatch) {
-          return res.status(404).json({ msg: "User does not exist" });
+          return res.status(401).json({ msg: "Email or password is incorrect" });
         }
-    
-        const token = jwt.sign(
-            { email: user.email, id: user._id },
+        else{
+          const token = jwt.sign(
+            { email: user.email, user_id: user._id },
             process.env.JWT_SECRET,
             { expiresIn: "12h" }
           );
     
         return res.status(200).json({ token });
+        }
+
+        }
+        
       }catch (err) {
         console.log(err);
         return res.status(500).json({ msg: "Something went wrong" });

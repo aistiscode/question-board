@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const authenticateUser = (req, res, next) => {
+const AUTHENTICATE_USER = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -11,9 +11,11 @@ const authenticateUser = (req, res, next) => {
     if (err) {
       return res.status(401).json({ message: "Error in authorization" });
     }
-    req.body.userId = decoded.id;
+    console.log("Decoded Token:", decoded);
+    req.body.user_id = decoded.user_id;
+    console.log("UserId in middleware:", req.body.user_id);
     return next();
   });
 };
 
-export default authenticateUser;
+export default AUTHENTICATE_USER;
